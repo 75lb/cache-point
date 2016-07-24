@@ -13,5 +13,12 @@
   "scripts": {
     "test": "tape test/*.js",
     "docs": "jsdoc2md -t jsdoc2md/README.hbs lib/*.js > README.md; echo"
+  },
+  "devDependencies": {
+    "tape": "^4.6.0"
+  },
+  "dependencies": {
+    "array-back": "^1.0.3",
+    "then-fs": "^2.0.0"
   }
 }
