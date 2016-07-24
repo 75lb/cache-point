@@ -4,9 +4,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var fs = require('then-fs');
 var path = require('path');
 var arrayify = require('array-back');
+var fs = require('fs');
 
 var Cache = function () {
   function Cache(options) {
@@ -23,13 +23,30 @@ var Cache = function () {
     key: 'read',
     value: function read(keys) {
       var blobPath = path.resolve(this.cacheDir, this.getChecksum(keys));
-      return fs.readFile(blobPath).then(JSON.parse);
+      var promise = new Promise(function (resolve, reject) {
+        fs.readFile(blobPath, function (err, data) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
+          }
+        });
+      });
+      return promise.then(JSON.parse);
     }
   }, {
     key: 'write',
     value: function write(keys, content) {
       var blobPath = path.resolve(this.cacheDir, this.getChecksum(keys));
-      return fs.writeFile(blobPath, JSON.stringify(content));
+      return new Promise(function (resolve, reject) {
+        fs.writeFile(blobPath, JSON.stringify(content), function (err) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      });
     }
   }, {
     key: 'getChecksum',
@@ -46,11 +63,17 @@ var Cache = function () {
     value: function clean() {
       var _this = this;
 
-      return fs.readdir(this.cacheDir).then(function (files) {
-        var promises = files.map(function (file) {
-          return fs.unlink(path.resolve(_this.cacheDir, file));
+      return new Promise(function (resolve, reject) {
+        fs.readdir(_this.cacheDir, function (err, files) {
+          if (err) {
+            reject(err);
+          } else {
+            var promises = files.map(function (file) {
+              return unlink(path.resolve(_this.cacheDir, file));
+            });
+            Promise.all(promises).then(resolve).catch(reject);
+          }
         });
-        return Promise.all(promises);
       });
     }
   }, {
@@ -59,7 +82,7 @@ var Cache = function () {
       var _this2 = this;
 
       return this.clean().then(function () {
-        return fs.rmdir(_this2.cacheDir);
+        return rmdir(_this2.cacheDir);
       });
     }
   }]);
@@ -68,3 +91,19 @@ var Cache = function () {
 }();
 
 module.exports = Cache;
+
+function unlink(filePath) {
+  return new Promise(function (resolve, reject) {
+    fs.unlink(filePath, function (err) {
+      if (err) reject(err);else resolve();
+    });
+  });
+}
+
+function rmdir(dir) {
+  return new Promise(function (resolve, reject) {
+    fs.rmdir(dir, function (err) {
+      if (err) reject(err);else resolve();
+    });
+  });
+}
