@@ -13,6 +13,10 @@ var Cache = function () {
     _classCallCheck(this, Cache);
 
     options = options || {};
+    if (!options.cacheDir) {
+      var os = require('os');
+      options.cacheDir = path.resolve(os.tmpdir(), 'cachePoint');
+    }
     this.cacheDir = options.cacheDir;
     try {
       fs.mkdirSync(this.cacheDir);
