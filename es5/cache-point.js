@@ -29,11 +29,7 @@ var Cache = function () {
       var blobPath = path.resolve(this.cacheDir, this.getChecksum(keys));
       var promise = new Promise(function (resolve, reject) {
         fs.readFile(blobPath, function (err, data) {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data);
-          }
+          if (err) reject(err);else resolve(data);
         });
       });
       return promise.then(JSON.parse);
@@ -44,11 +40,7 @@ var Cache = function () {
       var blobPath = path.resolve(this.cacheDir, this.getChecksum(keys));
       return new Promise(function (resolve, reject) {
         fs.writeFile(blobPath, JSON.stringify(content), function (err) {
-          if (err) {
-            reject(err);
-          } else {
-            resolve();
-          }
+          if (err) reject(err);else resolve();
         });
       });
     }

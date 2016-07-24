@@ -2,7 +2,7 @@
 var test = require('tape')
 var Cache = require('../')
 
-test('string key', function (t) {
+test('string key, string data', function (t) {
   t.plan(1)
   var cache = new Cache()
   cache.write('one', 'test1')
@@ -15,7 +15,7 @@ test('string key', function (t) {
     })
 })
 
-test('object key', function (t) {
+test('object key, string data', function (t) {
   t.plan(1)
   var cache = new Cache()
   var objectKey = { one: true }
@@ -25,6 +25,20 @@ test('object key', function (t) {
     })
     .then(function (data) {
       t.strictEqual(data, 'test1')
+      cache.remove()
+    })
+})
+
+test('object key, array data', function (t) {
+  t.plan(1)
+  var cache = new Cache()
+  var objectKey = { one: true }
+  cache.write(objectKey, ['test1'])
+    .then(function () {
+      return cache.read(objectKey)
+    })
+    .then(function (data) {
+      t.deepEqual(data, ['test1'])
       cache.remove()
     })
 })
