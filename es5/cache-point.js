@@ -41,6 +41,27 @@ var Cache = function () {
       });
       return hash.digest('hex');
     }
+  }, {
+    key: 'clean',
+    value: function clean() {
+      var _this = this;
+
+      return fs.readdir(this.cacheDir).then(function (files) {
+        var promises = files.map(function (file) {
+          return fs.unlink(path.resolve(_this.cacheDir, file));
+        });
+        return Promise.all(promises);
+      });
+    }
+  }, {
+    key: 'remove',
+    value: function remove() {
+      var _this2 = this;
+
+      return this.clean().then(function () {
+        return fs.rmdir(_this2.cacheDir);
+      });
+    }
   }]);
 
   return Cache;

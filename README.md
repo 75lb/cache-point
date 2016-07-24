@@ -19,6 +19,8 @@ const cache = new Cache({ cacheDir: '~/.cache' })
         * [.read(keys)](#module_cache-point--Cache+read) ⇒ <code>Promise</code>
         * [.write(keys, content)](#module_cache-point--Cache+write) ⇒ <code>Promise</code>
         * [.getChecksum(keys)](#module_cache-point--Cache+getChecksum) ⇒ <code>string</code>
+        * [.clean()](#module_cache-point--Cache+clean) ⇒ <code>Promise</code>
+        * [.remove()](#module_cache-point--Cache+remove) ⇒ <code>Promise</code>
 
 <a name="exp_module_cache-point--Cache"></a>
 
@@ -67,6 +69,18 @@ Converts a key value into a hex checksum.
 | --- | --- | --- |
 | keys | <code>\*</code> | One or more values to index the data, e.g. a request object or set of function args. |
 
+<a name="module_cache-point--Cache+clean"></a>
+
+#### cache.clean() ⇒ <code>Promise</code>
+Cleans the cache.
+
+**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+<a name="module_cache-point--Cache+remove"></a>
+
+#### cache.remove() ⇒ <code>Promise</code>
+Cleans and removes the cache.
+
+**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
 
 * * *
 

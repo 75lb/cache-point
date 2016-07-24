@@ -1,25 +1,16 @@
 'use strict'
 var test = require('tape')
 var Cache = require('../')
-var fs = require('fs')
-var path = require('path')
 
-function createDir(name) {
+function getTmpDir(name) {
   var os = require('os')
-  var tmpDir = path.resolve(os.tmpdir(), 'cacheTest')
-  return tmpDir
-}
-
-function rmDir (dir) {
-  fs.readdirSync(dir).forEach(function (file) {
-    fs.unlinkSync(path.resolve(dir, file))
-  })
-  fs.rmdirSync(dir)
+  var path = require('path')
+  return path.resolve(os.tmpdir(), 'cacheTest')
 }
 
 test('string key', function (t) {
   t.plan(1)
-  var tmpDir = createDir()
+  var tmpDir = getTmpDir()
   var cache = new Cache({ cacheDir: tmpDir })
   cache.write('one', 'test1')
     .then(function() {
@@ -27,13 +18,13 @@ test('string key', function (t) {
     })
     .then(function(data) {
       t.strictEqual(data, 'test1')
-      rmDir(tmpDir)
+      cache.remove()
     })
 })
 
 test('object key', function (t) {
   t.plan(1)
-  var tmpDir = createDir()
+  var tmpDir = getTmpDir()
   var cache = new Cache({ cacheDir: tmpDir })
   var objectKey = { one: true }
   cache.write(objectKey, 'test1')
@@ -42,6 +33,25 @@ test('object key', function (t) {
     })
     .then(function (data) {
       t.strictEqual(data, 'test1')
-      rmDir(tmpDir)
+      cache.remove()
+    })
+})
+
+test('.remove()', function (t) {
+  t.plan(1)
+  var tmpDir = getTmpDir()
+  var cache = new Cache({ cacheDir: tmpDir })
+  cache.write('one', 'test1')
+    .then(function() {
+      return cache.remove()
+    })
+    .then(function() {
+      t.throws(function () {
+        fs.statSync(tmpDir)
+      })
+    })
+    .catch(function (err) {
+      console.error(err.stack)
+      t.fail(err.message)
     })
 })
