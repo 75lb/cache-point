@@ -22,10 +22,10 @@ test('string key', function (t) {
   var tmpDir = createDir()
   var cache = new Cache({ cacheDir: tmpDir })
   cache.write('one', 'test1')
-    .then(() => {
+    .then(function() {
       return cache.read('one')
     })
-    .then(data => {
+    .then(function(data) {
       t.strictEqual(data, 'test1')
       rmDir(tmpDir)
     })
@@ -37,10 +37,10 @@ test('object key', function (t) {
   var cache = new Cache({ cacheDir: tmpDir })
   var objectKey = { one: true }
   cache.write(objectKey, 'test1')
-    .then(() => {
+    .then(function () {
       return cache.read(objectKey)
     })
-    .then(data => {
+    .then(function (data) {
       t.strictEqual(data, 'test1')
       rmDir(tmpDir)
     })
