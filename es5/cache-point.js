@@ -19,9 +19,6 @@ var Cache = function () {
     }
 
     this.dir = options.dir;
-
-    var mkdirp = require('mkdirp');
-    mkdirp.sync(this.dir);
   }
 
   _createClass(Cache, [{
@@ -81,6 +78,16 @@ var Cache = function () {
       return this.clean().then(function () {
         return rmdir(_this2.dir);
       });
+    }
+  }, {
+    key: 'dir',
+    get: function get() {
+      return this._dir;
+    },
+    set: function set(val) {
+      this._dir = val;
+      var mkdirp = require('mkdirp');
+      mkdirp.sync(this.dir);
     }
   }]);
 
