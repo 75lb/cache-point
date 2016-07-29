@@ -16,6 +16,7 @@ const cache = new Cache({ cacheDir: '~/.cache' })
 * [cache-point](#module_cache-point)
     * [Cache](#exp_module_cache-point--Cache) ⏏
         * [new Cache([options])](#new_module_cache-point--Cache_new)
+        * [.cacheDir](#module_cache-point--Cache.Cache+cacheDir) : <code>string</code>
         * [.read(keys)](#module_cache-point--Cache+read) ⇒ <code>Promise</code>
         * [.write(keys, content)](#module_cache-point--Cache+write) ⇒ <code>Promise</code>
         * [.getChecksum(keys)](#module_cache-point--Cache+getChecksum) ⇒ <code>string</code>
@@ -35,6 +36,12 @@ const cache = new Cache({ cacheDir: '~/.cache' })
 | [options] | <code>object</code> | 
 | [options.cacheDir] | <code>string</code> | 
 
+<a name="module_cache-point--Cache.Cache+cacheDir"></a>
+
+#### cache.cacheDir : <code>string</code>
+Cache directory
+
+**Kind**: instance property of <code>[Cache](#exp_module_cache-point--Cache)</code>  
 <a name="module_cache-point--Cache+read"></a>
 
 #### cache.read(keys) ⇒ <code>Promise</code>
