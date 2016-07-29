@@ -13,21 +13,21 @@ var Cache = function () {
     _classCallCheck(this, Cache);
 
     options = options || {};
-    if (!options.cacheDir) {
+    if (!options.dir) {
       var os = require('os');
-      options.cacheDir = path.resolve(os.tmpdir(), 'cachePoint');
+      options.dir = path.resolve(os.tmpdir(), 'cachePoint');
     }
 
-    this.cacheDir = options.cacheDir;
+    this.dir = options.dir;
 
     var mkdirp = require('mkdirp');
-    mkdirp.sync(this.cacheDir);
+    mkdirp.sync(this.dir);
   }
 
   _createClass(Cache, [{
     key: 'read',
     value: function read(keys) {
-      var blobPath = path.resolve(this.cacheDir, this.getChecksum(keys));
+      var blobPath = path.resolve(this.dir, this.getChecksum(keys));
       var promise = new Promise(function (resolve, reject) {
         fs.readFile(blobPath, function (err, data) {
           if (err) reject(err);else resolve(data);
@@ -38,7 +38,7 @@ var Cache = function () {
   }, {
     key: 'write',
     value: function write(keys, content) {
-      var blobPath = path.resolve(this.cacheDir, this.getChecksum(keys));
+      var blobPath = path.resolve(this.dir, this.getChecksum(keys));
       return new Promise(function (resolve, reject) {
         fs.writeFile(blobPath, JSON.stringify(content), function (err) {
           if (err) reject(err);else resolve();
@@ -61,12 +61,12 @@ var Cache = function () {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        fs.readdir(_this.cacheDir, function (err, files) {
+        fs.readdir(_this.dir, function (err, files) {
           if (err) {
             reject(err);
           } else {
             var promises = files.map(function (file) {
-              return unlink(path.resolve(_this.cacheDir, file));
+              return unlink(path.resolve(_this.dir, file));
             });
             Promise.all(promises).then(resolve).catch(reject);
           }
@@ -79,7 +79,7 @@ var Cache = function () {
       var _this2 = this;
 
       return this.clean().then(function () {
-        return rmdir(_this2.cacheDir);
+        return rmdir(_this2.dir);
       });
     }
   }]);

@@ -10,13 +10,13 @@
 **Example**  
 ```js
 const Cache = require('cache-point')
-const cache = new Cache({ cacheDir: '~/.cache' })
+const cache = new Cache({ dir: '~/.cache' })
 ```
 
 * [cache-point](#module_cache-point)
     * [Cache](#exp_module_cache-point--Cache) ⏏
         * [new Cache([options])](#new_module_cache-point--Cache_new)
-        * [.cacheDir](#module_cache-point--Cache.Cache+cacheDir) : <code>string</code>
+        * [.dir](#module_cache-point--Cache.Cache+dir) : <code>string</code>
         * [.read(keys)](#module_cache-point--Cache+read) ⇒ <code>Promise</code>
         * [.write(keys, content)](#module_cache-point--Cache+write) ⇒ <code>Promise</code>
         * [.getChecksum(keys)](#module_cache-point--Cache+getChecksum) ⇒ <code>string</code>
@@ -34,11 +34,11 @@ const cache = new Cache({ cacheDir: '~/.cache' })
 | Param | Type |
 | --- | --- |
 | [options] | <code>object</code> | 
-| [options.cacheDir] | <code>string</code> | 
+| [options.dir] | <code>string</code> | 
 
-<a name="module_cache-point--Cache.Cache+cacheDir"></a>
+<a name="module_cache-point--Cache.Cache+dir"></a>
 
-#### cache.cacheDir : <code>string</code>
+#### cache.dir : <code>string</code>
 Cache directory
 
 **Kind**: instance property of <code>[Cache](#exp_module_cache-point--Cache)</code>  
