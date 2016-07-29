@@ -17,10 +17,11 @@ var Cache = function () {
       var os = require('os');
       options.cacheDir = path.resolve(os.tmpdir(), 'cachePoint');
     }
+
     this.cacheDir = options.cacheDir;
-    try {
-      fs.mkdirSync(this.cacheDir);
-    } catch (err) {}
+
+    var mkdirp = require('mkdirp');
+    mkdirp.sync(this.cacheDir);
   }
 
   _createClass(Cache, [{
