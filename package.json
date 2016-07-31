@@ -11,12 +11,13 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "tape test/*.js",
+    "test": "test-runner test/*.js",
     "docs": "jsdoc2md -t jsdoc2md/README.hbs lib/*.js > README.md; echo",
     "es5": "babel --presets babel-preset-es2015 --no-comments lib --out-dir es5"
   },
   "devDependencies": {
-    "tape": "^4.6.0"
+    "core-assert": "~0.2.0",
+    "test-runner": "~0.1.8"
   },
   "dependencies": {
     "array-back": "^1.0.3",

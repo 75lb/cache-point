@@ -1,62 +1,59 @@
 'use strict'
-var test = require('tape')
+var test = require('test-runner')
 var Cache = require('../')
+var a = require('core-assert')
 
-test('string key, string data', function (t) {
-  t.plan(1)
-  var cache = new Cache()
-  cache.write('one', 'test1')
+test('string key, string data', function () {
+  var cache = new Cache({ dir: 'one' })
+  return cache.write('one', 'test1')
     .then(function() {
       return cache.read('one')
     })
     .then(function(data) {
-      t.strictEqual(data, 'test1')
+      a.strictEqual(data, 'test1')
       cache.remove()
     })
 })
 
-test('object key, string data', function (t) {
-  t.plan(1)
-  var cache = new Cache()
+test('object key, string data', function () {
+  var cache = new Cache({ dir: 'two' })
   var objectKey = { one: true }
-  cache.write(objectKey, 'test1')
+  return cache.write(objectKey, 'test1')
     .then(function () {
       return cache.read(objectKey)
     })
     .then(function (data) {
-      t.strictEqual(data, 'test1')
+      a.strictEqual(data, 'test1')
       cache.remove()
     })
 })
 
-test('object key, array data', function (t) {
-  t.plan(1)
-  var cache = new Cache()
+test('object key, array data', function () {
+  var cache = new Cache({ dir: 'three' })
   var objectKey = { one: true }
-  cache.write(objectKey, ['test1'])
+  return cache.write(objectKey, ['test1'])
     .then(function () {
       return cache.read(objectKey)
     })
     .then(function (data) {
-      t.deepEqual(data, ['test1'])
+      a.deepEqual(data, ['test1'])
       cache.remove()
     })
 })
 
-test('.remove()', function (t) {
-  t.plan(1)
-  var cache = new Cache()
-  cache.write('one', 'test1')
+test('.remove()', function () {
+  var cache = new Cache({ dir: 'four' })
+  return cache.write('one', 'test1')
     .then(function() {
       return cache.remove()
     })
     .then(function() {
-      t.throws(function () {
+      a.throws(function () {
         fs.statSync(tmpDir)
       })
     })
     .catch(function (err) {
       console.error(err.stack)
-      t.fail(err.message)
+      a.fail(err.message)
     })
 })
