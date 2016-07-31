@@ -33,6 +33,13 @@ var Cache = function () {
       return promise.then(JSON.parse);
     }
   }, {
+    key: 'readSync',
+    value: function readSync(keys) {
+      var blobPath = path.resolve(this.dir, this.getChecksum(keys));
+      var data = fs.readFileSync(blobPath, 'utf8');
+      return JSON.parse(data);
+    }
+  }, {
     key: 'write',
     value: function write(keys, content) {
       var blobPath = path.resolve(this.dir, this.getChecksum(keys));
@@ -41,6 +48,12 @@ var Cache = function () {
           if (err) reject(err);else resolve();
         });
       });
+    }
+  }, {
+    key: 'writeSync',
+    value: function writeSync(keys, content) {
+      var blobPath = path.resolve(this.dir, this.getChecksum(keys));
+      fs.writeFileSync(blobPath, JSON.stringify(content));
     }
   }, {
     key: 'getChecksum',

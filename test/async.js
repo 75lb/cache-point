@@ -4,7 +4,7 @@ var Cache = require('../')
 var a = require('core-assert')
 
 test('string key, string data', function () {
-  var cache = new Cache({ dir: 'one' })
+  var cache = new Cache({ dir: 'tmp/one' })
   return cache.write('one', 'test1')
     .then(function() {
       return cache.read('one')
@@ -16,7 +16,7 @@ test('string key, string data', function () {
 })
 
 test('object key, string data', function () {
-  var cache = new Cache({ dir: 'two' })
+  var cache = new Cache({ dir: 'tmp/two' })
   var objectKey = { one: true }
   return cache.write(objectKey, 'test1')
     .then(function () {
@@ -29,7 +29,7 @@ test('object key, string data', function () {
 })
 
 test('object key, array data', function () {
-  var cache = new Cache({ dir: 'three' })
+  var cache = new Cache({ dir: 'tmp/three' })
   var objectKey = { one: true }
   return cache.write(objectKey, ['test1'])
     .then(function () {
@@ -42,7 +42,7 @@ test('object key, array data', function () {
 })
 
 test('.remove()', function () {
-  var cache = new Cache({ dir: 'four' })
+  var cache = new Cache({ dir: 'tmp/four' })
   return cache.write('one', 'test1')
     .then(function() {
       return cache.remove()
