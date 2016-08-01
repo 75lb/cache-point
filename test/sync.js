@@ -30,6 +30,13 @@ test('sync: object key, array data', function () {
   a.deepEqual(result, data)
 })
 
+test('sync: key not found', function () {
+  var cache = new Cache({ dir: 'tmp/sync/four' })
+  var objectKey = 'asfrfe'
+  var result = cache.readSync(objectKey)
+  a.deepEqual(result, null)
+})
+
 test.skip('sync: .remove()', function () {
   var cache = new Cache({ dir: 'four' })
   return cache.writeSync('one', 'test1')
