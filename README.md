@@ -25,6 +25,7 @@ function expensiveOperation (input) {
   })
 }
 
+// check the cache for output generated with this input.
 // cache.read() will resolve on hit, reject on miss.
 function getData (input) {
   return cache
@@ -35,6 +36,8 @@ function getData (input) {
 // The first invocation will take 3s, the rest instantaneous.
 getData('some input')
   .then(console.log)
+
+// outputs: 'result'
 ```
 
 * [cache-point](#module_cache-point)

@@ -23,3 +23,5 @@ function getData (input) {
 // The first invocation will take 3s, the rest instantaneous.
 getData('some input')
   .then(console.log)
+
+// outputs: 'result'
