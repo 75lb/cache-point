@@ -1,12 +1,18 @@
 {
   "name": "cache-point",
   "author": "Lloyd Brookes <75pound@gmail.com>",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Simple, filesystem-backed memoisation cache.",
   "repository": "https://github.com/75lb/cache-point.git",
   "license": "MIT",
   "main": "index",
-  "keywords": [ "memoisation", "memoization", "cache", "file", "store" ],
+  "keywords": [
+    "memoisation",
+    "memoization",
+    "cache",
+    "file",
+    "store"
+  ],
   "engines": {
     "node": ">=0.10.0"
   },
