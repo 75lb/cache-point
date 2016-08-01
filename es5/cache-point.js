@@ -24,7 +24,7 @@ var Cache = function () {
   _createClass(Cache, [{
     key: 'read',
     value: function read(keys) {
-      var blobPath = path.resolve(this.dir, this.getChecksum(keys));
+      var blobPath = path.resolve(this._dir, this.getChecksum(keys));
       var promise = new Promise(function (resolve, reject) {
         fs.readFile(blobPath, function (err, data) {
           if (err) reject(err);else resolve(data);
@@ -35,14 +35,18 @@ var Cache = function () {
   }, {
     key: 'readSync',
     value: function readSync(keys) {
-      var blobPath = path.resolve(this.dir, this.getChecksum(keys));
-      var data = fs.readFileSync(blobPath, 'utf8');
-      return JSON.parse(data);
+      var blobPath = path.resolve(this._dir, this.getChecksum(keys));
+      try {
+        var data = fs.readFileSync(blobPath, 'utf8');
+        return JSON.parse(data);
+      } catch (err) {
+        return null;
+      }
     }
   }, {
     key: 'write',
     value: function write(keys, content) {
-      var blobPath = path.resolve(this.dir, this.getChecksum(keys));
+      var blobPath = path.resolve(this._dir, this.getChecksum(keys));
       return new Promise(function (resolve, reject) {
         fs.writeFile(blobPath, JSON.stringify(content), function (err) {
           if (err) reject(err);else resolve();
@@ -52,7 +56,7 @@ var Cache = function () {
   }, {
     key: 'writeSync',
     value: function writeSync(keys, content) {
-      var blobPath = path.resolve(this.dir, this.getChecksum(keys));
+      var blobPath = path.resolve(this._dir, this.getChecksum(keys));
       fs.writeFileSync(blobPath, JSON.stringify(content));
     }
   }, {
@@ -66,17 +70,17 @@ var Cache = function () {
       return hash.digest('hex');
     }
   }, {
-    key: 'clean',
-    value: function clean() {
+    key: 'clear',
+    value: function clear() {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        fs.readdir(_this.dir, function (err, files) {
+        fs.readdir(_this._dir, function (err, files) {
           if (err) {
             reject(err);
           } else {
             var promises = files.map(function (file) {
-              return unlink(path.resolve(_this.dir, file));
+              return unlink(path.resolve(_this._dir, file));
             });
             Promise.all(promises).then(resolve).catch(reject);
           }
@@ -88,8 +92,8 @@ var Cache = function () {
     value: function remove() {
       var _this2 = this;
 
-      return this.clean().then(function () {
-        return rmdir(_this2.dir);
+      return this.clear().then(function () {
+        return rmdir(_this2._dir);
       });
     }
   }, {
