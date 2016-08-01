@@ -12,28 +12,29 @@ A memoisation solution intended to cache the output of expensive operations, spe
 **Example**  
 ```js
 const Cache = require('cache-point')
- const cache = new Cache({ dir: 'tmp/example' })
+const cache = new Cache({ dir: 'tmp/example' })
 
- function expensiveOperation (input) {
-   return new Promise((resolve, reject) => {
-     // endure a 3s wait for the result
-     setTimeout(() => {
-       const output = 'result'
-       cache.write(input, output)
-       resolve(output)
-     }, 3000)
-   })
- }
+// endure a 3s wait for the result
+function expensiveOperation (input) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const output = 'result'
+      cache.write(input, output)
+      resolve(output)
+    }, 3000)
+  })
+}
 
- function getData (input) {
-   return cache
-     .read(input)
-     .catch(() => expensiveOperation(input))
- }
+// cache.read() will resolve on hit, reject on miss.
+function getData (input) {
+  return cache
+    .read(input)
+    .catch(() => expensiveOperation(input))
+}
 
- // The first invocation will take 3s, the rest instant.
- getData('some input')
-   .then(console.log)
+// The first invocation will take 3s, the rest instantaneous.
+getData('some input')
+  .then(console.log)
 ```
 
 * [cache-point](#module_cache-point)
@@ -43,7 +44,7 @@ const Cache = require('cache-point')
         * [.read(keys)](#module_cache-point--Cache+read) ⇒ <code>Promise</code>
         * [.readSync(keys)](#module_cache-point--Cache+readSync) ⇒ <code>string</code>
         * [.write(keys, content)](#module_cache-point--Cache+write) ⇒ <code>Promise</code>
-        * [.writeSync(keys, content)](#module_cache-point--Cache+writeSync) ⇒ <code>Promise</code>
+        * [.writeSync(keys, content)](#module_cache-point--Cache+writeSync)
         * [.getChecksum(keys)](#module_cache-point--Cache+getChecksum) ⇒ <code>string</code>
         * [.clear()](#module_cache-point--Cache+clear) ⇒ <code>Promise</code>
         * [.remove()](#module_cache-point--Cache+remove) ⇒ <code>Promise</code>
@@ -64,35 +65,37 @@ const Cache = require('cache-point')
 <a name="module_cache-point--Cache.Cache+dir"></a>
 
 #### cache.dir : <code>string</code>
-Cache directory
+Current cache directory. Can be changed at any time.
 
 **Kind**: instance property of <code>[Cache](#exp_module_cache-point--Cache)</code>  
 <a name="module_cache-point--Cache+read"></a>
 
 #### cache.read(keys) ⇒ <code>Promise</code>
-Cache hit resolves, miss rejects.
+A cache hit resolves with the stored value, a miss rejects.
 
 **Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Resolve**: <code>\*</code>  
+**Reject**:   
 
 | Param | Type | Description |
 | --- | --- | --- |
-| keys | <code>\*</code> | One or more values to index the data, e.g. a request object or set of function args. |
+| keys | <code>\*</code> | One or more values to uniquely identify the data. Can be any value, or an array of values of any type. |
 
 <a name="module_cache-point--Cache+readSync"></a>
 
 #### cache.readSync(keys) ⇒ <code>string</code>
-Cache hit returns data, miss returns null.
+A cache hit returns the stored value, a miss returns `null`.
 
 **Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| keys | <code>\*</code> | One or more values to index the data, e.g. a request object or set of function args. |
+| keys | <code>\*</code> | One or more values to uniquely identify the data. Can be any value, or an array of values of any type. |
 
 <a name="module_cache-point--Cache+write"></a>
 
 #### cache.write(keys, content) ⇒ <code>Promise</code>
-Write some data to the cache with a key.
+Write some data to the cache. Returns a promise which resolves when the write is complete.
 
 **Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
 
@@ -103,7 +106,7 @@ Write some data to the cache with a key.
 
 <a name="module_cache-point--Cache+writeSync"></a>
 
-#### cache.writeSync(keys, content) ⇒ <code>Promise</code>
+#### cache.writeSync(keys, content)
 Write some data to the cache with a key.
 
 **Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
@@ -127,13 +130,13 @@ Converts a key value into a hex checksum.
 <a name="module_cache-point--Cache+clear"></a>
 
 #### cache.clear() ⇒ <code>Promise</code>
-Clears the cache.
+Clears the cache. Returns a promise which resolves once the cache is clear.
 
 **Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
 <a name="module_cache-point--Cache+remove"></a>
 
 #### cache.remove() ⇒ <code>Promise</code>
-Cleans and removes the cache.
+Clears and removes the cache directory. Returns a promise which resolves once the remove is complete.
 
 **Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
 
