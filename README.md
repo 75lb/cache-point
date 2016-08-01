@@ -77,8 +77,6 @@ Current cache directory. Can be changed at any time.
 A cache hit resolves with the stored value, a miss rejects.
 
 **Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
-**Resolve**: <code>\*</code>  
-**Reject**:   
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -122,7 +120,7 @@ Write some data to the cache with a key.
 <a name="module_cache-point--Cache+getChecksum"></a>
 
 #### cache.getChecksum(keys) ⇒ <code>string</code>
-Converts a key value into a hex checksum.
+Used internally to convert a key value into a hex checksum. Override if for some reason you need a different hashing strategy.
 
 **Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
 
