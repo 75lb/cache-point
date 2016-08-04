@@ -14,16 +14,10 @@ A memoisation solution intended to cache the output of expensive operations, spe
 const Cache = require('cache-point')
 const cache = new Cache({ dir: 'tmp/example' })
 
-// endure a 3s wait for the result
-function expensiveOperation (input) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const output = 'result'
-      cache.write(input, output)
-      resolve(output)
-    }, 3000)
-  })
-}
+// The first invocation will take 3s, the rest instantaneous.
+// outputs: 'result'
+getData('some input')
+  .then(console.log)
 
 // check the cache for output generated with this input.
 // cache.read() will resolve on hit, reject on miss.
@@ -33,11 +27,17 @@ function getData (input) {
     .catch(() => expensiveOperation(input))
 }
 
-// The first invocation will take 3s, the rest instantaneous.
-getData('some input')
-  .then(console.log)
-
-// outputs: 'result'
+// The expensive operation we're aiming to avoid,
+// (3 second cost per invocation)
+function expensiveOperation (input) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const output = 'result'
+      cache.write(input, output)
+      resolve(output)
+    }, 3000)
+  })
+}
 ```
 
 * [cache-point](#module_cache-point)
@@ -144,3 +144,4 @@ Clears and removes the cache directory. Returns a promise which resolves once th
 * * *
 
 &copy; 2016 Lloyd Brookes \<75pound@gmail.com\>. Documented by [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).
+
