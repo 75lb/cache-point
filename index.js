@@ -5,5 +5,5 @@ if (typeof Promise === 'undefined') {
 }
 
 module.exports = detect.all('class', 'arrowFunction', 'templateStrings')
-  ? require('./lib/cache-point')
-  : require('./es5/cache-point')
+  ? require('./src/lib/cache-point')
+  : require('./es5/lib/cache-point')

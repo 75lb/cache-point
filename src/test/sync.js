@@ -1,6 +1,6 @@
 'use strict'
 var TestRunner = require('test-runner')
-var Cache = require('../')
+var Cache = require('../../')
 var a = require('core-assert')
 
 var runner = new TestRunner()
