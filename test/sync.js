@@ -1,9 +1,11 @@
 'use strict'
-var test = require('test-runner')
+var TestRunner = require('test-runner')
 var Cache = require('../')
 var a = require('core-assert')
 
-test('sync: string key, string data', function () {
+var runner = new TestRunner()
+
+runner.test('sync: string key, string data', function () {
   var cache = new Cache({ dir: 'tmp/sync/one' })
   var objectKey = 'one'
   var data = 'test1'
@@ -12,7 +14,7 @@ test('sync: string key, string data', function () {
   a.strictEqual(result, data)
 })
 
-test('sync: object key, string data', function () {
+runner.test('sync: object key, string data', function () {
   var cache = new Cache({ dir: 'tmp/sync/two' })
   var objectKey = { one: true }
   var data = 'test1'
@@ -21,7 +23,7 @@ test('sync: object key, string data', function () {
   a.strictEqual(result, data)
 })
 
-test('sync: object key, array data', function () {
+runner.test('sync: object key, array data', function () {
   var cache = new Cache({ dir: 'tmp/sync/three' })
   var objectKey = { one: true }
   var data = ['test1']
@@ -30,14 +32,14 @@ test('sync: object key, array data', function () {
   a.deepEqual(result, data)
 })
 
-test('sync: key not found', function () {
+runner.test('sync: key not found', function () {
   var cache = new Cache({ dir: 'tmp/sync/four' })
   var objectKey = 'asfrfe'
   var result = cache.readSync(objectKey)
   a.deepEqual(result, null)
 })
 
-test.skip('sync: .remove()', function () {
+runner.skip('sync: .remove()', function () {
   var cache = new Cache({ dir: 'four' })
   return cache.writeSync('one', 'test1')
     .then(function() {

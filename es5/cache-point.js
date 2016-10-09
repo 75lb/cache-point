@@ -6,7 +6,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var path = require('path');
 var arrayify = require('array-back');
-var fs = require('fs');
+var fs = require('fs-then-native');
 
 var Cache = function () {
   function Cache(options) {
@@ -25,12 +25,7 @@ var Cache = function () {
     key: 'read',
     value: function read(keys) {
       var blobPath = path.resolve(this._dir, this.getChecksum(keys));
-      var promise = new Promise(function (resolve, reject) {
-        fs.readFile(blobPath, function (err, data) {
-          if (err) reject(err);else resolve(data);
-        });
-      });
-      return promise.then(JSON.parse);
+      return fs.readFile(blobPath).then(JSON.parse);
     }
   }, {
     key: 'readSync',
@@ -47,11 +42,7 @@ var Cache = function () {
     key: 'write',
     value: function write(keys, content) {
       var blobPath = path.resolve(this._dir, this.getChecksum(keys));
-      return new Promise(function (resolve, reject) {
-        fs.writeFile(blobPath, JSON.stringify(content), function (err) {
-          if (err) reject(err);else resolve();
-        });
-      });
+      return fs.writeFile(blobPath, JSON.stringify(content));
     }
   }, {
     key: 'writeSync',
@@ -74,17 +65,11 @@ var Cache = function () {
     value: function clear() {
       var _this = this;
 
-      return new Promise(function (resolve, reject) {
-        fs.readdir(_this._dir, function (err, files) {
-          if (err) {
-            reject(err);
-          } else {
-            var promises = files.map(function (file) {
-              return unlink(path.resolve(_this._dir, file));
-            });
-            Promise.all(promises).then(resolve).catch(reject);
-          }
+      return fs.readdir(this._dir).then(function (files) {
+        var promises = files.map(function (file) {
+          return fs.unlink(path.resolve(_this._dir, file));
         });
+        return Promise.all(promises);
       });
     }
   }, {
@@ -93,7 +78,7 @@ var Cache = function () {
       var _this2 = this;
 
       return this.clear().then(function () {
-        return rmdir(_this2._dir);
+        return fs.rmdir(_this2._dir);
       });
     }
   }, {
@@ -112,19 +97,3 @@ var Cache = function () {
 }();
 
 module.exports = Cache;
-
-function unlink(filePath) {
-  return new Promise(function (resolve, reject) {
-    fs.unlink(filePath, function (err) {
-      if (err) reject(err);else resolve();
-    });
-  });
-}
-
-function rmdir(dir) {
-  return new Promise(function (resolve, reject) {
-    fs.rmdir(dir, function (err) {
-      if (err) reject(err);else resolve();
-    });
-  });
-}
