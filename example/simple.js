@@ -1,5 +1,5 @@
 'use strict'
-const Cache = require('../../')
+const Cache = require('../')
 const cache = new Cache({ dir: 'tmp/example' })
 
 // The first invocation will take 3s, the rest instantaneous.

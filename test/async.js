@@ -1,13 +1,13 @@
 'use strict'
-var TestRunner = require('test-runner')
-var Cache = require('../../')
-var a = require('core-assert')
-var fs = require('fs-then-native')
+const TestRunner = require('test-runner')
+const Cache = require('../')
+const a = require('assert')
+const fs = require('fs-then-native')
 
-var runner = new TestRunner()
+const runner = new TestRunner()
 
 runner.test('string key, string data', function () {
-  var cache = new Cache({ dir: 'tmp/one' })
+  const cache = new Cache({ dir: 'tmp/one' })
   return cache.write('one', 'test1')
     .then(function() {
       return cache.read('one')
@@ -18,8 +18,8 @@ runner.test('string key, string data', function () {
 })
 
 runner.test('object key, string data', function () {
-  var cache = new Cache({ dir: 'tmp/two' })
-  var objectKey = { one: true }
+  const cache = new Cache({ dir: 'tmp/two' })
+  const objectKey = { one: true }
   return cache.write(objectKey, 'test1')
     .then(function () {
       return cache.read(objectKey)
@@ -30,8 +30,8 @@ runner.test('object key, string data', function () {
 })
 
 runner.test('object key, array data', function () {
-  var cache = new Cache({ dir: 'tmp/three' })
-  var objectKey = { one: true }
+  const cache = new Cache({ dir: 'tmp/three' })
+  const objectKey = { one: true }
   return cache.write(objectKey, ['test1'])
     .then(function () {
       return cache.read(objectKey)
@@ -42,7 +42,7 @@ runner.test('object key, array data', function () {
 })
 
 runner.test('.remove()', function () {
-  var cache = new Cache({ dir: 'tmp/four' })
+  const cache = new Cache({ dir: 'tmp/four' })
   return cache.write('one', 'test1')
     .then(function() {
       return cache.remove()
@@ -57,7 +57,7 @@ runner.test('.remove()', function () {
 })
 
 runner.test('.clear()', function () {
-  var cache = new Cache({ dir: 'tmp/five' })
+  const cache = new Cache({ dir: 'tmp/five' })
   return cache.write('one', 'test1')
     .then(() => {
       return fs.readdir('tmp/five')
