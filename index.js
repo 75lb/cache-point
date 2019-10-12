@@ -1,4 +1,3 @@
-'use strict'
 const path = require('path')
 const arrayify = require('array-back')
 const fs = require('fs-then-native')

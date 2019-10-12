@@ -1,12 +1,11 @@
-'use strict'
-const TestRunner = require('test-runner')
+const Tom = require('test-runner').Tom
 const Cache = require('../')
 const a = require('assert')
 const fs = require('fs-then-native')
 
-const runner = new TestRunner()
+const tom = module.exports = new Tom('async')
 
-runner.test('string key, string data', function () {
+tom.test('string key, string data', function () {
   const cache = new Cache({ dir: 'tmp/one' })
   return cache.write('one', 'test1')
     .then(function() {
@@ -17,7 +16,7 @@ runner.test('string key, string data', function () {
     })
 })
 
-runner.test('object key, string data', function () {
+tom.test('object key, string data', function () {
   const cache = new Cache({ dir: 'tmp/two' })
   const objectKey = { one: true }
   return cache.write(objectKey, 'test1')
@@ -29,7 +28,7 @@ runner.test('object key, string data', function () {
     })
 })
 
-runner.test('object key, array data', function () {
+tom.test('object key, array data', function () {
   const cache = new Cache({ dir: 'tmp/three' })
   const objectKey = { one: true }
   return cache.write(objectKey, ['test1'])
@@ -41,7 +40,7 @@ runner.test('object key, array data', function () {
     })
 })
 
-runner.test('.remove()', function () {
+tom.test('.remove()', function () {
   const cache = new Cache({ dir: 'tmp/four' })
   return cache.write('one', 'test1')
     .then(function() {
@@ -56,7 +55,7 @@ runner.test('.remove()', function () {
     })
 })
 
-runner.test('.clear()', function () {
+tom.test('.clear()', function () {
   const cache = new Cache({ dir: 'tmp/five' })
   return cache.write('one', 'test1')
     .then(() => {

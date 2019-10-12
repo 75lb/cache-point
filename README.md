@@ -43,7 +43,7 @@ function expensiveOperation (input) {
 * [cache-point](#module_cache-point)
     * [Cache](#exp_module_cache-point--Cache) ⏏
         * [new Cache([options])](#new_module_cache-point--Cache_new)
-        * [.dir](#module_cache-point--Cache.Cache+dir) : <code>string</code>
+        * [.dir](#module_cache-point--Cache+dir) : <code>string</code>
         * [.read(keys)](#module_cache-point--Cache+read) ⇒ <code>Promise</code>
         * [.readSync(keys)](#module_cache-point--Cache+readSync) ⇒ <code>string</code>
         * [.write(keys, content)](#module_cache-point--Cache+write) ⇒ <code>Promise</code>
@@ -65,18 +65,18 @@ function expensiveOperation (input) {
 | [options] | <code>object</code> | 
 | [options.dir] | <code>string</code> | 
 
-<a name="module_cache-point--Cache.Cache+dir"></a>
+<a name="module_cache-point--Cache+dir"></a>
 
 #### cache.dir : <code>string</code>
 Current cache directory. Can be changed at any time.
 
-**Kind**: instance property of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Kind**: instance property of [<code>Cache</code>](#exp_module_cache-point--Cache)  
 <a name="module_cache-point--Cache+read"></a>
 
 #### cache.read(keys) ⇒ <code>Promise</code>
 A cache hit resolves with the stored value, a miss rejects.
 
-**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Kind**: instance method of [<code>Cache</code>](#exp_module_cache-point--Cache)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -87,7 +87,7 @@ A cache hit resolves with the stored value, a miss rejects.
 #### cache.readSync(keys) ⇒ <code>string</code>
 A cache hit returns the stored value, a miss returns `null`.
 
-**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Kind**: instance method of [<code>Cache</code>](#exp_module_cache-point--Cache)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -98,7 +98,7 @@ A cache hit returns the stored value, a miss returns `null`.
 #### cache.write(keys, content) ⇒ <code>Promise</code>
 Write some data to the cache. Returns a promise which resolves when the write is complete.
 
-**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Kind**: instance method of [<code>Cache</code>](#exp_module_cache-point--Cache)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -110,7 +110,7 @@ Write some data to the cache. Returns a promise which resolves when the write is
 #### cache.writeSync(keys, content)
 Write some data to the cache with a key.
 
-**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Kind**: instance method of [<code>Cache</code>](#exp_module_cache-point--Cache)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -122,7 +122,7 @@ Write some data to the cache with a key.
 #### cache.getChecksum(keys) ⇒ <code>string</code>
 Used internally to convert a key value into a hex checksum. Override if for some reason you need a different hashing strategy.
 
-**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Kind**: instance method of [<code>Cache</code>](#exp_module_cache-point--Cache)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -133,14 +133,14 @@ Used internally to convert a key value into a hex checksum. Override if for some
 #### cache.clear() ⇒ <code>Promise</code>
 Clears the cache. Returns a promise which resolves once the cache is clear.
 
-**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Kind**: instance method of [<code>Cache</code>](#exp_module_cache-point--Cache)  
 <a name="module_cache-point--Cache+remove"></a>
 
 #### cache.remove() ⇒ <code>Promise</code>
 Clears and removes the cache directory. Returns a promise which resolves once the remove is complete.
 
-**Kind**: instance method of <code>[Cache](#exp_module_cache-point--Cache)</code>  
+**Kind**: instance method of [<code>Cache</code>](#exp_module_cache-point--Cache)  
 
 * * *
 
-&copy; 2016-17 Lloyd Brookes \<75pound@gmail.com\>. Documented by [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).
+&copy; 2016-19 Lloyd Brookes \<75pound@gmail.com\>. Documented by [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).

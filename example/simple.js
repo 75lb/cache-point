@@ -1,4 +1,3 @@
-'use strict'
 const Cache = require('../')
 const cache = new Cache({ dir: 'tmp/example' })
 
