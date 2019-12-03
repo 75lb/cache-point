@@ -30,8 +30,6 @@ class Users {
   }
 }
 
-// The first invocation will take 1s, the rest instantaneous.
-// outputs: 'result'
 async function start () {
   console.time('getUser')
   const users = new Users()

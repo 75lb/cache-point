@@ -62,7 +62,7 @@ getUser: 1.025s
 { id: 10, name: 'Layla' }
 ```
 
-Now the cache is warm, future invocations will be fast.
+Since the cache is now warm, future invocations will be fast.
 
 ```
 $ node example/simple.js
