@@ -35,7 +35,7 @@ class Users {
 async function start () {
   console.time('getUser')
   const users = new Users()
-  const user = await users.getUser(2)
+  const user = await users.getUser(10)
   console.timeEnd('getUser')
   console.log(user)
 }

@@ -6,14 +6,14 @@
 
 # cache-point
 
-A memoisation solution to cache the output of expensive operations, speeding up future invocations passing the same input.
+Simple, filesystem-backed memoisation cache. Use to cache the output of expensive operations, speeding up future invocations which use the same input.
 
 ## Synopsis
 
 ```js
 const Cache = require('cache-point')
 
-/* mock function to simulate a remote request */
+/* a mock function to simulate a slow remote request */
 async function fetchUser (id) {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -43,17 +43,31 @@ class Users {
   }
 }
 
-// The first invocation will take 1s, the rest instantaneous.
-// outputs: 'result'
 async function start () {
   console.time('getUser')
   const users = new Users()
-  const user = await users.getUser(2)
+  const user = await users.getUser(1)
   console.timeEnd('getUser')
   console.log(user)
 }
 
 start().catch(console.error)
+```
+
+The first invocation will take 1 second while the remote user is fetched.
+
+```
+$ node example/simple.js
+getUser: 1.025s
+{ id: 10, name: 'Layla' }
+```
+
+Now the cache is warm, future invocations will be fast.
+
+```
+$ node example/simple.js
+getUser: 17.07ms
+{ id: 10, name: 'Layla' }
 ```
 
 ## API Reference
