@@ -3,7 +3,7 @@ const Cache = require('../')
 const a = require('assert')
 const fs = require('fs-then-native')
 
-const tom = module.exports = new Tom('async')
+const tom = module.exports = new Tom()
 
 tom.test('string key, string data', function () {
   const cache = new Cache({ dir: 'tmp/one' })

@@ -1,8 +1,8 @@
 const Tom = require('test-runner').Tom
 const Cache = require('../')
-const a = require('assert')
+const a = require('assert').strict
 
-const tom = module.exports = new Tom('sync')
+const tom = module.exports = new Tom()
 
 tom.test('sync: string key, string data', function () {
   const cache = new Cache({ dir: 'tmp/sync/one' })
@@ -10,7 +10,7 @@ tom.test('sync: string key, string data', function () {
   const data = 'test1'
   cache.writeSync(objectKey, data)
   const result = cache.readSync(objectKey)
-  a.strictEqual(result, data)
+  a.equal(result, data)
 })
 
 tom.test('sync: object key, string data', function () {
@@ -19,7 +19,7 @@ tom.test('sync: object key, string data', function () {
   const data = 'test1'
   cache.writeSync(objectKey, data)
   const result = cache.readSync(objectKey)
-  a.strictEqual(result, data)
+  a.equal(result, data)
 })
 
 tom.test('sync: object key, array data', function () {

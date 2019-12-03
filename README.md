@@ -6,7 +6,7 @@
 
 # cache-point
 
-Simple, filesystem-backed memoisation cache. Use to cache the output of expensive operations, speeding up future invocations which use the same input.
+Simple, filesystem-backed memoisation cache. Use to cache the output of expensive operations speeding up future invocations with the same input.
 
 ## Synopsis
 
