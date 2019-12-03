@@ -1,44 +1,66 @@
 [![view on npm](http://img.shields.io/npm/v/cache-point.svg)](https://www.npmjs.org/package/cache-point)
 [![npm module downloads](http://img.shields.io/npm/dt/cache-point.svg)](https://www.npmjs.org/package/cache-point)
 [![Build Status](https://travis-ci.org/75lb/cache-point.svg?branch=master)](https://travis-ci.org/75lb/cache-point)
-[![Dependency Status](https://david-dm.org/75lb/cache-point.svg)](https://david-dm.org/75lb/cache-point)
+[![Dependency Status](https://badgen.net/david/dep/75lb/cache-point)](https://david-dm.org/75lb/cache-point)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/feross/standard)
+
+# cache-point
+
+A memoisation solution to cache the output of expensive operations, speeding up future invocations passing the same input.
+
+## Synopsis
+
+```js
+const Cache = require('cache-point')
+
+/* mock function to simulate a remote request */
+async function fetchUser (id) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve({ id, name: 'Layla' })
+    }, 1000)
+  })
+}
+
+class Users {
+  constructor () {
+    this.cache = new Cache({ dir: 'tmp/example' })
+  }
+
+  async getUser (id) {
+    let user
+    try {
+      /* cache.read() will resolve on hit, reject on miss */
+      user = await this.cache.read(id)
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        /* cache miss, fetch remote user */
+        user = await fetchUser(id)
+        this.cache.write(id, user)
+      }
+    }
+    return user
+  }
+}
+
+// The first invocation will take 1s, the rest instantaneous.
+// outputs: 'result'
+async function start () {
+  console.time('getUser')
+  const users = new Users()
+  const user = await users.getUser(2)
+  console.timeEnd('getUser')
+  console.log(user)
+}
+
+start().catch(console.error)
+```
+
+## API Reference
 
 <a name="module_cache-point"></a>
 
 ## cache-point
-A memoisation solution intended to cache the output of expensive operations, speeding up future invocations with the same input.
-
-**Example**  
-```js
-const Cache = require('cache-point')
-const cache = new Cache({ dir: 'tmp/example' })
-
-// The first invocation will take 3s, the rest instantaneous.
-// outputs: 'result'
-getData('some input')
-  .then(console.log)
-
-// check the cache for output generated with this input.
-// cache.read() will resolve on hit, reject on miss.
-function getData (input) {
-  return cache
-    .read(input)
-    .catch(() => expensiveOperation(input))
-}
-
-// The expensive operation we're aiming to avoid,
-// (3 second cost per invocation)
-function expensiveOperation (input) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const output = 'result'
-      cache.write(input, output)
-      resolve(output)
-    }, 3000)
-  })
-}
-```
 
 * [cache-point](#module_cache-point)
     * [Cache](#exp_module_cache-point--Cache) ⏏
@@ -74,9 +96,13 @@ Current cache directory. Can be changed at any time.
 <a name="module_cache-point--Cache+read"></a>
 
 #### cache.read(keys) ⇒ <code>Promise</code>
-A cache hit resolves with the stored value, a miss rejects.
+A cache hit resolves with the stored value, a miss rejects with an `ENOENT` error code.
 
 **Kind**: instance method of [<code>Cache</code>](#exp_module_cache-point--Cache)  
+**Throws**:
+
+- ENOENT
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -143,4 +169,6 @@ Clears and removes the cache directory. Returns a promise which resolves once th
 
 * * *
 
-&copy; 2016-19 Lloyd Brookes \<75pound@gmail.com\>. Documented by [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).
+&copy; 2016-20 Lloyd Brookes \<75pound@gmail.com\>.
+
+Tested by [test-runner](https://github.com/test-runner-js/test-runner). Documented by [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).

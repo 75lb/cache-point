@@ -20,11 +20,11 @@
     "docs": "jsdoc2md -t README.hbs index.js > README.md"
   },
   "devDependencies": {
-    "jsdoc-to-markdown": "^5.0.2",
-    "test-runner": "~0.6.0"
+    "jsdoc-to-markdown": "^5.0.3",
+    "test-runner": "~0.8.7"
   },
   "dependencies": {
-    "array-back": "^4.0.0",
+    "array-back": "^4.0.1",
     "fs-then-native": "^2.0.0",
     "mkdirp2": "^1.0.4"
   },

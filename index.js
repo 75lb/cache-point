@@ -3,36 +3,7 @@ const arrayify = require('array-back')
 const fs = require('fs-then-native')
 
 /**
- * A memoisation solution intended to cache the output of expensive operations, speeding up future invocations with the same input.
  * @module cache-point
- * @example
- * const Cache = require('cache-point')
- * const cache = new Cache({ dir: 'tmp/example' })
- *
- * // The first invocation will take 3s, the rest instantaneous.
- * // outputs: 'result'
- * getData('some input')
- *   .then(console.log)
- *
- * // check the cache for output generated with this input.
- * // cache.read() will resolve on hit, reject on miss.
- * function getData (input) {
- *   return cache
- *     .read(input)
- *     .catch(() => expensiveOperation(input))
- * }
- *
- * // The expensive operation we're aiming to avoid,
- * // (3 second cost per invocation)
- * function expensiveOperation (input) {
- *   return new Promise((resolve, reject) => {
- *     setTimeout(() => {
- *       const output = 'result'
- *       cache.write(input, output)
- *       resolve(output)
- *     }, 3000)
- *   })
- * }
  */
 
 /**
@@ -67,9 +38,10 @@ class Cache {
   }
 
   /**
-   * A cache hit resolves with the stored value, a miss rejects.
+   * A cache hit resolves with the stored value, a miss rejects with an `ENOENT` error code.
    * @param {*} - One or more values to uniquely identify the data. Can be any value, or an array of values of any type.
    * @returns {Promise}
+   * @throws ENOENT
    */
   read (keys) {
     const blobPath = path.resolve(this._dir, this.getChecksum(keys))

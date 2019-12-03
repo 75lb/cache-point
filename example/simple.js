@@ -1,26 +1,45 @@
 const Cache = require('../')
-const cache = new Cache({ dir: 'tmp/example' })
 
-// The first invocation will take 3s, the rest instantaneous.
-// outputs: 'result'
-getData('some input')
-  .then(console.log)
-
-// cache.read() will resolve on hit, reject on miss.
-function getData (input) {
-  return cache
-    .read(input)
-    .catch(() => expensiveOperation(input))
-}
-
-// The expensive operation we're aiming to avoid,
-// (3 second cost per invocation)
-function expensiveOperation (input) {
-  return new Promise((resolve, reject) => {
+/* mock function to simulate a remote request */
+async function fetchUser (id) {
+  return new Promise(resolve => {
     setTimeout(() => {
-      const output = 'result'
-      cache.write(input, output)
-      resolve(output)
-    }, 3000)
+      resolve({ id, name: 'Layla' })
+    }, 1000)
   })
 }
+
+class Users {
+  constructor () {
+    this.cache = new Cache({ dir: 'tmp/example' })
+  }
+
+  async getUser (id) {
+    let user
+    try {
+      /* cache.read() will resolve on hit, reject on miss */
+      user = await this.cache.read(id)
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        /* cache miss, fetch remote user */
+        user = await fetchUser(id)
+        this.cache.write(id, user)
+      }
+    }
+    return user
+  }
+}
+
+// The first invocation will take 1s, the rest instantaneous.
+// outputs: 'result'
+async function start () {
+  console.time('getUser')
+  const users = new Users()
+  const user = await users.getUser(2)
+  console.timeEnd('getUser')
+  console.log(user)
+}
+
+start().catch(console.error)
+
+
