@@ -1,7 +1,8 @@
-[![view on npm](http://img.shields.io/npm/v/cache-point.svg)](https://www.npmjs.org/package/cache-point)
-[![npm module downloads](http://img.shields.io/npm/dt/cache-point.svg)](https://www.npmjs.org/package/cache-point)
-[![Build Status](https://travis-ci.org/75lb/cache-point.svg?branch=master)](https://travis-ci.org/75lb/cache-point)
-[![Dependency Status](https://badgen.net/david/dep/75lb/cache-point)](https://david-dm.org/75lb/cache-point)
+[![view on npm](https://badgen.net/npm/v/cache-point)](https://www.npmjs.org/package/cache-point)
+[![npm module downloads](https://badgen.net/npm/dt/cache-point)](https://www.npmjs.org/package/cache-point)
+[![Gihub repo dependents](https://badgen.net/github/dependents-repo/75lb/cache-point)](https://github.com/75lb/cache-point/network/dependents?dependent_type=REPOSITORY)
+[![Gihub package dependents](https://badgen.net/github/dependents-pkg/75lb/cache-point)](https://github.com/75lb/cache-point/network/dependents?dependent_type=PACKAGE)
+[![Node.js CI](https://github.com/75lb/cache-point/actions/workflows/node.js.yml/badge.svg)](https://github.com/75lb/cache-point/actions/workflows/node.js.yml)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/feross/standard)
 
 # cache-point
@@ -11,15 +12,13 @@ Simple, filesystem-backed memoisation cache. Use to cache the output of expensiv
 ## Synopsis
 
 ```js
-const Cache = require('cache-point')
+import Cache from 'cache-point'
+import { setTimeout as sleep } from 'node:timers/promises'
 
-/* a mock function to simulate a slow remote request */
+/* mock function to simulate a slow, remote request */
 async function fetchUser (id) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ id, name: 'Layla' })
-    }, 1000)
-  })
+  await sleep(1000)
+  return { id, name: 'Layla' }
 }
 
 class Users {
@@ -43,15 +42,11 @@ class Users {
   }
 }
 
-async function start () {
-  console.time('getUser')
-  const users = new Users()
-  const user = await users.getUser(1)
-  console.timeEnd('getUser')
-  console.log(user)
-}
-
-start().catch(console.error)
+console.time('getUser')
+const users = new Users()
+const user = await users.getUser(10)
+console.timeEnd('getUser')
+console.log(user)
 ```
 
 The first invocation will take 1 second while the remote user is fetched.
@@ -183,6 +178,6 @@ Clears and removes the cache directory. Returns a promise which resolves once th
 
 * * *
 
-&copy; 2016-20 Lloyd Brookes \<75pound@gmail.com\>.
+&copy; 2016-24 Lloyd Brookes \<75pound@gmail.com\>.
 
 Tested by [test-runner](https://github.com/test-runner-js/test-runner). Documented by [jsdoc-to-markdown](https://github.com/jsdoc2md/jsdoc-to-markdown).

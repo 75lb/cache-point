@@ -1,12 +1,10 @@
-const Cache = require('cache-point')
+import Cache from 'cache-point'
+import { setTimeout as sleep } from 'node:timers/promises'
 
-/* mock function to simulate a remote request */
+/* mock function to simulate a slow, remote request */
 async function fetchUser (id) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ id, name: 'Layla' })
-    }, 1000)
-  })
+  await sleep(1000)
+  return { id, name: 'Layla' }
 }
 
 class Users {
@@ -30,14 +28,8 @@ class Users {
   }
 }
 
-async function start () {
-  console.time('getUser')
-  const users = new Users()
-  const user = await users.getUser(10)
-  console.timeEnd('getUser')
-  console.log(user)
-}
-
-start().catch(console.error)
-
-
+console.time('getUser')
+const users = new Users()
+const user = await users.getUser(10)
+console.timeEnd('getUser')
+console.log(user)
