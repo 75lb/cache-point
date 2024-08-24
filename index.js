@@ -1,6 +1,8 @@
-const path = require('path')
-const arrayify = require('array-back')
-const fs = require('fs-then-native')
+import path from 'path'
+import { promises as fs, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import arrayify from 'array-back'
+import os from 'os'
+import crypto from 'crypto'
 
 /**
  * @module cache-point
@@ -18,7 +20,6 @@ class Cache {
   constructor (options) {
     options = options || {}
     if (!options.dir) {
-      var os = require('os')
       options.dir = path.resolve(os.tmpdir(), 'cachePoint')
     }
     /**
@@ -33,8 +34,7 @@ class Cache {
   }
   set dir (val) {
     this._dir = val
-    const mkdirp = require('mkdirp2')
-    mkdirp.sync(this.dir)
+    mkdirSync(this.dir, { recursive: true })
   }
 
   /**
@@ -43,7 +43,7 @@ class Cache {
    * @returns {Promise}
    * @throws ENOENT
    */
-  read (keys) {
+  async read (keys) {
     const blobPath = path.resolve(this._dir, this.getChecksum(keys))
     return fs.readFile(blobPath).then(JSON.parse)
   }
@@ -56,7 +56,7 @@ class Cache {
   readSync (keys) {
     const blobPath = path.resolve(this._dir, this.getChecksum(keys))
     try {
-      const data = fs.readFileSync(blobPath, 'utf8')
+      const data = readFileSync(blobPath, 'utf8')
       return JSON.parse(data)
     } catch (err) {
       return null
@@ -69,7 +69,7 @@ class Cache {
    * @param {*} - the data to store
    * @returns {Promise}
    */
-  write (keys, content) {
+  async write (keys, content) {
     const blobPath = path.resolve(this._dir, this.getChecksum(keys))
     return fs.writeFile(blobPath, JSON.stringify(content))
   }
@@ -81,7 +81,7 @@ class Cache {
    */
   writeSync (keys, content) {
     const blobPath = path.resolve(this._dir, this.getChecksum(keys))
-    fs.writeFileSync(blobPath, JSON.stringify(content))
+    writeFileSync(blobPath, JSON.stringify(content))
   }
 
   /**
@@ -90,7 +90,6 @@ class Cache {
    * @returns {string}
    */
   getChecksum (keys) {
-    const crypto = require('crypto')
     const hash = crypto.createHash('sha1')
     arrayify(keys).forEach(key => hash.update(JSON.stringify(key)))
     return hash.digest('hex')
@@ -100,23 +99,20 @@ class Cache {
    * Clears the cache. Returns a promise which resolves once the cache is clear.
    * @returns {Promise}
    */
-  clear () {
-    return fs.readdir(this._dir)
-      .then(files => {
-        const promises = files.map(file => fs.unlink(path.resolve(this._dir, file)))
-        return Promise.all(promises)
-      })
+  async clear () {
+    const files = await fs.readdir(this._dir)
+    const promises = files.map(file => fs.unlink(path.resolve(this._dir, file)))
+    return Promise.all(promises)
   }
 
   /**
    * Clears and removes the cache directory. Returns a promise which resolves once the remove is complete.
    * @returns {Promise}
    */
-  remove () {
-    return this.clear().then(() => {
-      return fs.rmdir(this._dir)
-    })
+  async remove () {
+    await this.clear()
+    return fs.rmdir(this._dir)
   }
 }
 
-module.exports = Cache
+export default Cache

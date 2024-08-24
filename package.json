@@ -3,8 +3,15 @@
   "author": "Lloyd Brookes <75pound@gmail.com>",
   "version": "2.0.0",
   "description": "Simple, filesystem-backed memoisation cache.",
-  "repository": "https://github.com/75lb/cache-point",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/75lb/cache-point.git"
+  },
+  "type": "module",
+  "exports": {
+    "import": "./index.js",
+    "require": "./dist/index.cjs"
+  },
   "keywords": [
     "memoisation",
     "memoization",
@@ -12,23 +19,28 @@
     "file",
     "store"
   ],
+  "license": "MIT",
   "engines": {
-    "node": ">=8"
+    "node": ">=12.17"
   },
   "scripts": {
-    "test": "test-runner test/*.js",
-    "docs": "jsdoc2md -t README.hbs index.js > README.md"
-  },
-  "devDependencies": {
-    "jsdoc-to-markdown": "^5.0.3",
-    "test-runner": "~0.8.7"
+    "test": "npm run dist && npm run test:ci",
+    "test:ci": "75lb-nature test test/async.js test/sync.js",
+    "dist": "75lb-nature cjs-build index.js",
+    "docs": "75lb-nature jsdoc2md -t README.hbs index.js > README.md"
   },
   "dependencies": {
-    "array-back": "^4.0.1",
-    "fs-then-native": "^2.0.0",
-    "mkdirp2": "^1.0.4"
+    "array-back": "^6.2.2"
   },
   "files": [
-    "index.js"
-  ]
+    "index.js",
+    "dist"
+  ],
+  "standard": {
+    "ignore": [
+      "tmp",
+      "dist"
+    ],
+    "envs": []
+  }
 }

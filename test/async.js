@@ -1,76 +1,51 @@
-const Tom = require('test-runner').Tom
-const Cache = require('../')
-const a = require('assert')
-const fs = require('fs-then-native')
+import Cache from 'cache-point'
+import { strict as a } from 'assert'
+import { promises as fs, statSync } from 'fs'
 
-const tom = module.exports = new Tom()
+const [test, only, skip] = [new Map(), new Map(), new Map()]
 
-tom.test('string key, string data', function () {
+test.set('string key, string data', async function () {
   const cache = new Cache({ dir: 'tmp/one' })
-  return cache.write('one', 'test1')
-    .then(function() {
-      return cache.read('one')
-    })
-    .then(function(data) {
-      a.strictEqual(data, 'test1')
-    })
+  await cache.write('one', 'test1')
+  const data = await cache.read('one')
+  a.strictEqual(data, 'test1')
 })
 
-tom.test('object key, string data', function () {
+test.set('object key, string data', async function () {
   const cache = new Cache({ dir: 'tmp/two' })
   const objectKey = { one: true }
-  return cache.write(objectKey, 'test1')
-    .then(function () {
-      return cache.read(objectKey)
-    })
-    .then(function (data) {
-      a.strictEqual(data, 'test1')
-    })
+  await cache.write(objectKey, 'test1')
+  const data = await cache.read(objectKey)
+  a.strictEqual(data, 'test1')
 })
 
-tom.test('object key, array data', function () {
+test.set('object key, array data', async function () {
   const cache = new Cache({ dir: 'tmp/three' })
   const objectKey = { one: true }
-  return cache.write(objectKey, ['test1'])
-    .then(function () {
-      return cache.read(objectKey)
-    })
-    .then(function (data) {
-      a.deepEqual(data, ['test1'])
-    })
+  await cache.write(objectKey, ['test1'])
+  const data = await cache.read(objectKey)
+  a.deepEqual(data, ['test1'])
 })
 
-tom.test('.remove()', function () {
+test.set('.remove()', async function () {
   const cache = new Cache({ dir: 'tmp/four' })
-  return cache.write('one', 'test1')
-    .then(function() {
-      return cache.remove()
-    })
-    .then(function() {
-      try {
-        fs.statSync('tmp/four')
-      } catch (err) {
-        if (err.code !== 'ENOENT') throw err
-      }
-    })
+  await cache.write('one', 'test1')
+  await cache.remove()
+  try {
+    statSync('tmp/four')
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err
+  }
 })
 
-tom.test('.clear()', function () {
+test.set('.clear()', async function () {
   const cache = new Cache({ dir: 'tmp/five' })
-  return cache.write('one', 'test1')
-    .then(() => {
-      return fs.readdir('tmp/five')
-        .then(files => {
-          a.strictEqual(files.length, 1)
-        })
-    })
-    .then(() => {
-      return cache.clear()
-        .then(() => {
-          return fs.readdir('tmp/five')
-            .then(files => {
-              a.strictEqual(files.length, 0)
-            })
-        })
-    })
+  await cache.write('one', 'test1')
+  const files = await fs.readdir('tmp/five')
+  a.strictEqual(files.length, 1)
+  await cache.clear()
+  const files2 = await fs.readdir('tmp/five')
+  a.strictEqual(files2.length, 0)
 })
+
+export { test, only, skip }

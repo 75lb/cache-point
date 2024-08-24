@@ -1,4 +1,4 @@
-const Cache = require('../')
+const Cache = require('cache-point')
 
 /* mock function to simulate a remote request */
 async function fetchUser (id) {
