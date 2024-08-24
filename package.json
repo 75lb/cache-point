@@ -1,7 +1,7 @@
 {
   "name": "cache-point",
   "author": "Lloyd Brookes <75pound@gmail.com>",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Simple, filesystem-backed memoisation cache.",
   "repository": {
     "type": "git",
@@ -36,7 +36,9 @@
     "@75lb/nature": "^0.1.1"
   },
   "peerDependenciesMeta": {
-    "@75lb/nature": { "optional": true }
+    "@75lb/nature": {
+      "optional": true
+    }
   },
   "files": [
     "index.js",
