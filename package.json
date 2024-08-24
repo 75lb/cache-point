@@ -32,6 +32,12 @@
   "dependencies": {
     "array-back": "^6.2.2"
   },
+  "peerDependencies": {
+    "@75lb/nature": "^0.1.1"
+  },
+  "peerDependenciesMeta": {
+    "@75lb/nature": { "optional": true }
+  },
   "files": [
     "index.js",
     "dist"
