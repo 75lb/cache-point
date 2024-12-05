@@ -4,12 +4,15 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, next ]
   pull_request:
     branches: [ master ]
 
 jobs:
   build:
+
+    permissions:
+      contents: read
 
     runs-on: ${{ matrix.os }}
 
@@ -20,11 +23,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: npm i @75lb/nature@^0.1.1
+    - run: npm i @75lb/nature
     - run: npm run test:ci

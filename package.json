@@ -33,7 +33,7 @@
     "array-back": "^6.2.2"
   },
   "peerDependencies": {
-    "@75lb/nature": "^0.1.1"
+    "@75lb/nature": "latest"
   },
   "peerDependenciesMeta": {
     "@75lb/nature": {
