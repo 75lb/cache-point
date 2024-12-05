@@ -1,6 +1,6 @@
 {
   "name": "cache-point",
-  "author": "Lloyd Brookes <75pound@gmail.com>",
+  "author": "Lloyd Brookes <opensource@75lb.com>",
   "version": "3.0.0",
   "description": "Simple, filesystem-backed memoisation cache.",
   "repository": {
@@ -25,7 +25,7 @@
   },
   "scripts": {
     "test": "npm run dist && npm run test:ci",
-    "test:ci": "75lb-nature test test/async.js test/sync.js",
+    "test:ci": "75lb-nature test-runner test/async.js test/sync.js",
     "dist": "75lb-nature cjs-build index.js",
     "docs": "75lb-nature jsdoc2md -t README.hbs index.js > README.md"
   },
